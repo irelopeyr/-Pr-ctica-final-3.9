@@ -22,4 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Rutas para la gestión de miembros de un proyecto
+Route::post('/projects/{project}/members', [ProjectController::class, 'addMember'])->name('projects.members.store');
+Route::patch('/projects/{project}/members/{user}', [ProjectController::class, 'updateMember'])->name('projects.members.update');
+Route::delete('/projects/{project}/members/{user}', [ProjectController::class, 'removeMember'])->name('projects.members.destroy');
 require __DIR__.'/auth.php';
