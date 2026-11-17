@@ -1,12 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>Editar proyecto</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Editar: {{ $project->title }}
+        </h2>
     </x-slot>
 
-    <form action="{{ route('projects.update', $project) }}" method="POST">
-        @method('PUT')
-        @include('projects._form')
-        <button type="submit">Guardar cambios</button>
-        <a href="{{ route('projects.show', $project) }}">Cancelar</a>
-    </form>
+    <div class="py-12">
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                @include('projects._form', ['project' => $project])
+            </div>
+        </div>
+    </div>
 </x-app-layout>
