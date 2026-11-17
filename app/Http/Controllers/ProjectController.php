@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -21,19 +21,12 @@ class ProjectController extends Controller
         return view('projects.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    // El método store ahora utiliza ProjectRequest para validar los datos del proyecto
+    public function store(ProjectRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'due_date' => 'required|date',
-            'status' => 'required|in:pendiente,en curso,terminado',
-        ]);
-
-        $request->user()->ownedProjects()->create($validated);
-
+        $request->user()->ownedProjects()->create($request->validated());
         return redirect()->route('projects.index')
-            ->with('success', 'Proyecto creado correctamente.');
+        ->with('success', 'Proyecto creado correctamente.');
     }
 
     public function show(Project $project): View
@@ -50,21 +43,12 @@ class ProjectController extends Controller
         return view('projects.edit', compact('project'));
     }
 
-    public function update(Request $request, Project $project): RedirectResponse
+    public function update(ProjectRequest $request, Project $project): RedirectResponse
     {
         $this->authorizeOwner($project);
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'due_date' => 'required|date',
-            'status' => 'required|in:pendiente,en curso,terminado',
-        ]);
-
-        $project->update($validated);
-
+        $project->update($request->validated());
         return redirect()->route('projects.show', $project)
-            ->with('success', 'Proyecto actualizado correctamente.');
+        ->with('success', 'Proyecto actualizado correctamente.');
     }
 
     public function destroy(Project $project): RedirectResponse

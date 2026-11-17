@@ -4,11 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 
-Route::get('/', function () {
+// Rutas web de la aplicación
+Route::get('/', function () { // Ruta de inicio que devuelve la vista 'welcome'
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function () { // Ruta del dashboard que devuelve la vista 'dashboard'
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
