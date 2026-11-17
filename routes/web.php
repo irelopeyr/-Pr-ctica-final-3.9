@@ -15,6 +15,9 @@ Route::get('/dashboard', function () { // Ruta del dashboard que devuelve la vis
 
 // Rutas para el CRUD de proyectos, protegidas por el middleware de autenticación
 Route::resource('projects', ProjectController::class)->middleware('auth');
+Route::post('/projects/{project}/members', [ProjectController::class, 'addMember'])->name('projects.members.store');
+Route::patch('/projects/{project}/members/{user}', [ProjectController::class, 'updateMember'])->name('projects.members.update');
+Route::delete('/projects/{project}/members/{user}', [ProjectController::class, 'removeMember'])->name('projects.members.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
